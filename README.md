@@ -5,3 +5,5 @@ This is what I __used__ to __use__ way before when I started joining peoples gam
 
 # Why I made this open source?
 Cause its super simple to make and doesn't take any effort and the bot won't join it justs finds the pins and stores them in codes.txt
+
+https://streamable.com/i9yjb7 flood blooket games is possible again --> https://discord.gg/PvtvNFwx join server to flood blooket games
