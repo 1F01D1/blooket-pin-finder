@@ -8,7 +8,7 @@ import requests
 from colorama import init, Fore
 import os
 
-print("Starting Chaos ;)")
+print("Starting To Find Game Pins")
 f = open('codes.txt', 'a')
 joinname = str(input("Input a Join Name: "))
 threadamount = int(input("Input Number of threads: "))
