@@ -1,57 +1,35 @@
-# glizzz_y#0777
+# glizzz_y
 
-import logging
-import threading
-import time
 import random
-from datetime import datetime
-import json
 import requests
-from colorama import init, Fore
-import os
+import threading
 
-print("Starting To Find Game Pins")
-f = open('codes.txt', 'a')
-joinname = str(input("Input a Join Name: "))
-threadamount = int(input("Input Number of threads: "))
-init()
-os.system("cls")
+thread_amount = int(input("Number of Threads: "))
 
 
-def code_finder(name):
-    logging.info("Thread %s: starting", name)
-    for l in range(10000):
-        gamePin = str(random.randint(100000, 999999))
-        r = requests.put("https://api.blooket.com/api/firebase/join", data={
-                         "id": gamePin, "name": joinname}, headers={"Referer": "https://www.blooket.com/"})
-        joinText = r.text
-        if "true," in joinText:
-            print(Fore.LIGHTGREEN_EX + "Found Code:", gamePin, "With Host:", json.loads(
-                joinText)["host"]["ho"], "At", datetime.now(), "Joined with name:", joinname)
-            f.write("Pin Worked: ")
-            f.write(gamePin)
-            f.write(" Host: ")
-            f.write(json.loads(joinText)["host"]["ho"])
-            f.write(" At: ")
-            f.write(str(datetime.now()))
-            f.write("\n")
-            f.flush()
+def main():
+    for _ in range(10000):
+        random_numbers = str(random.randint(100000, 999999))
+
+        response = requests.get(
+            f"https://api.blooket.com/api/firebase/id?id={random_numbers}")
+        data = response.json()
+
+        if data["success"] == True:
+            print('Valid Game Pin: ' + random_numbers)
         else:
-            print(Fore.LIGHTRED_EX + "Incorrect Pin:", gamePin)
-    time.sleep(1)
-    logging.info("Thread %s: finishing", name)
+            print('Invalid Game Pin: ' + random_numbers)
 
 
 if __name__ == "__main__":
-    format = "%(asctime)s: %(message)s"
-    logging.basicConfig(format=format, level=logging.INFO, datefmt="%H:%M:%S")
     threads = list()
-    for index in range(threadamount):
-        logging.info("Main: created and started thread %d.", index)
-        x = threading.Thread(target=code_finder, args=(index,))
-        threads.append(x)
-        x.start()
+
+    for index in range(thread_amount):
+        _ = threading.Thread(target=main())
+
+        threads.append(_)
+
+        _.start()
+
     for index, thread in enumerate(threads):
-        logging.info("Main: before joining thread %d.", index)
         thread.join()
-        logging.info("Main: thread %d done", index)
