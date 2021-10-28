@@ -25,7 +25,7 @@ if __name__ == "__main__":
     threads = list()
 
     for index in range(thread_amount):
-        _ = threading.Thread(target=main())
+        _ = threading.Thread(target=main(), args=(index,))
 
         threads.append(_)
 
