@@ -1,4 +1,4 @@
-# glizzz_y
+# glizzers
 
 import random
 import requests
