@@ -1,14 +1,16 @@
 import socket
 import ssl
 import random
+import time
 import threading
 import logging
 import json
 
 thread_amount = int(input("Number of Threads: "))
+f = open('validPins.txt', 'a')
 
 
-def main():
+def main(name):
     for _ in range(10000):
         random_numbers = str(random.randint(100000, 999999))
 
@@ -27,9 +29,17 @@ def main():
 
         if _data["success"] != False:
             print("Valid game pin: " + random_numbers)
+            f.write('valid game pin: ')
+            f.write(random_numbers)
+            f.write("\n")
+            f.flush()
         else:
             print('Invalid game pin: ' + random_numbers)
-        
+        time.sleep(1)
+
+        try: sock.shutdown(2)
+        except OSError: pass
+        sock.close()
 
 
 if __name__ == "__main__":
@@ -38,10 +48,11 @@ if __name__ == "__main__":
     threads = list()
     for index in range(thread_amount):
         logging.info("Main: created and started thread %d.", index)
-        x = threading.Thread(target=main(), args=(index,))
+        x = threading.Thread(target=main, args=(index,))
         threads.append(x)
         x.start()
     for index, thread in enumerate(threads):
         logging.info("Main: before joining thread %d.", index)
         thread.join()
         logging.info("Main: thread %d done", index)
+
